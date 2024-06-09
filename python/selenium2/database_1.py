@@ -40,3 +40,20 @@ if __name__ == '__main__':
     for stu in stus.find():
         print(stu)
 
+    # 更新一条记录
+    print("更新一条记录...")
+    nam = int(input("请输入记录的name:"))  # 提示输入要修改的数据
+    nam_1 = str(input("请输入修改的数据:"))
+    stus.update_many({'name': nam}, {'$set': {'name': nam_1}})
+    # 显示所以有记录
+    print("显示所有记录...")
+    for stu in stus.find():
+        print(stu)
+
+    # s删除一条记录
+    print("删除一条记录...")
+    nam = int(input("请输入记录的name:"))
+    stus.delete_many({'name': nam})  # 删除表中的数据
+    print("显示所有记录...")
+    for stu in stus.find():
+        print(stu)
