@@ -6,7 +6,8 @@ db = pymysql.connect(host="localhost", user="root", passwd="3074272950", databas
 cursor = db.cursor()
 # SQL插入语句
 sql = """insert into test(first_name,last_name,age,sex,income)
-          values('Mac','Mohan','22','M',2000)"""
+          values('Lily','HuangTing','21','W',4000),
+          ('Lucy','MoLi','23','W',5000)"""
 try:
     # 执行SQL语句
     cursor.execute(sql)
