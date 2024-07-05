@@ -1,21 +1,48 @@
+import random
+import time
+
 import pymysql
 
-# 连接数据库
-db = pymysql.connect(host="localhost", user="root", passwd="3074272950", database="SYS", port=3306)
-# 使用cursor()方法操作游标
-cursor = db.cursor()
-# SQL插入语句
-sql = """insert into test(first_name,last_name,age,sex,income)
-          values('Lily','HuangTing','21','W',4000),
-          ('Lucy','MoLi','23','W',5000)"""
-try:
-    # 执行SQL语句
-    cursor.execute(sql)
-    # 提交到数据库执行
-    db.commit()
-except:
-    # 如果发生错误则回滚
-    db.rollback()
-# 关闭数据库连接
-db.close()
+# 数据库连接参数
 
+db_config = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': '3074272950',
+    'db': 'student',
+}
+
+# 初始计数器
+count = 0
+
+# 连接到数据库
+connection = pymysql.connect(**db_config)
+
+try:
+    while count < 2:  # 只执行两次获取人名的操作
+        with connection.cursor() as cursor:
+            # 从数据库student中的表student_info获取数据
+            sql = "SELECT id, name FROM student_info ORDER BY RAND() LIMIT 1"
+
+            cursor.execute(sql)
+            results = cursor.fetchall()
+
+            # 获取随机人名
+            if results:
+                count += 1
+                print(f"\n第{count}次随机抽签")
+                # 打印获取的人名
+                for (id, name) in results:
+                    print("随机演讲的幸运儿是:", id, name)
+                    # 获取当前系统时间
+                    current_time = time.strftime("%Y年%m月%d日 %H:%M:%S", time.localtime())
+                    print(current_time)
+            else:
+                print("没有获取到人名")
+                break
+
+finally:
+    # 关闭数据库连接
+    connection.close()
+# 打印总共进行了多少次随机抽签
+print(f"\n总共执行了{count}次随机抽签")
